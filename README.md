@@ -128,6 +128,6 @@ Zero API cost during development. Qwen3:8b runs locally via Docker and is capabl
 
 **Armaan Khan** — Aspiring AI Automation Engineer
 
-Building in public: [LinkedIn](https://www.linkedin.com/in/armaankhan-tech/) · [GitHub](https://github.com/armaankhantech-glitch) · [Twitter/X](https://x.com/armaankhantech)
+Building in public: [LinkedIn](https://www.linkedin.com/in/armaankhan-tech/) · [GitHub](https://github.com/armaankhantech) · [Twitter/X](https://x.com/armaankhantech)
 
 Part of my [AI Automation Journey](https://github.com/armaankhantech/ai-automation-journey)
