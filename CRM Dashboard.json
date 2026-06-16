@@ -1,0 +1,125 @@
+{
+  "name": "CRM Dashboard",
+  "nodes": [
+    {
+      "parameters": {
+        "path": "crm-dashboard",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "2e8ab49f-1216-4060-b1fc-8ebc83095a42",
+      "name": "Webhook",
+      "webhookId": "6aed1a42-8861-41f5-ae30-b7e38bd68705"
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "SELECT *\nFROM leads\nORDER BY created_at DESC;",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        304,
+        0
+      ],
+      "id": "7aceacce-1af3-4622-b509-2534d203af2e",
+      "name": "Execute a SQL query",
+      "credentials": {
+        "postgres": {
+          "id": "fTWh4XW2T9NtyCLk",
+          "name": "Postgres account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const leads = $input.all();\nconst highValueLeads = leads.filter(\n  lead => lead.json.pipeline === 'High value'\n).length;\nconst mediumValueLeads = leads.filter(\n  lead => lead.json.pipeline === 'Medium value'\n).length;\n\nconst lowValueLeads = leads.filter(\n  lead => lead.json.pipeline === 'low value'\n).length;\n\nconst newLeads = leads.filter(\n  lead => lead.json.status === 'New'\n).length;\n\nconst contactedLeads = leads.filter(\n  lead => lead.json.status === 'Contacted'\n).length;\n\nconst meetingLeads = leads.filter(\n  lead => lead.json.status === 'Meeting Scheduled'\n).length;\n\nconst proposalLeads = leads.filter(\n  lead => lead.json.status === 'Proposal Sent'\n).length;\n\nconst wonLeads = leads.filter(\n  lead => lead.json.status === 'Won'\n).length;\n\nlet rows = '';\n\n\nfor (const lead of leads) {\n\n  rows += `\n  <tr>\n    <td>${lead.json.id}</td>\n    <td>${lead.json.name}</td>\n    <td>${lead.json.company}</td>\n    <td>${lead.json.email}</td>\n    <td>${lead.json.budget}</td>\n    <td>${lead.json.pipeline}</td>\n\n    <td>\n      <select>\n        <option ${lead.json.status === 'New' ? 'selected' : ''}>New</option>\n        <option ${lead.json.status === 'Contacted' ? 'selected' : ''}>Contacted</option>\n        <option ${lead.json.status === 'Meeting Scheduled' ? 'selected' : ''}>Meeting Scheduled</option>\n        <option ${lead.json.status === 'Proposal Sent' ? 'selected' : ''}>Proposal Sent</option>\n        <option ${lead.json.status === 'Won' ? 'selected' : ''}>Won</option>\n        <option ${lead.json.status === 'Lost' ? 'selected' : ''}>Lost</option>\n      </select>\n    </td>\n\n    <td>\n      <a href=\"https://rinse-upside-oyster.ngrok-free.dev/webhook/update-status?id=${lead.json.id}\">\n        Update\n      </a>\n    </td>\n  </tr>`;\n}\nconst totalLeads = leads.length;\nconst html = `\n\n<!DOCTYPE html>\n<html>\n<head>\n<title>Smart Lead CRM Dashboard</title>\n<p>Last Updated: ${new Date().toLocaleString()}</p>\n\n<style>\nbody {\n  font-family: Arial, sans-serif;\n  padding: 20px;\n}\n\ntable {\n  width: 100%;\n  border-collapse: collapse;\n}\n\nth, td {\n  border: 1px solid #ddd;\n  padding: 10px;\n}\n\nth {\n  background: #f4f4f4;\n}\n</style>\n\n</head>\n<body>\n\n<h1>Smart Lead CRM Dashboard</h1>\n<input\ntype=\"text\"\nplaceholder=\"Search Leads...\"\nstyle=\"padding:10px;width:300px;margin-bottom:20px;\"\n>\n<h2>Sales Pipeline</h2>\n<div style=\"padding:15px;border:1px solid #ddd;min-width:120px;\">\n  <h3>Total Leads</h3>\n  <p>${totalLeads}</p>\n</div>\n<div style=\"display:flex;gap:15px;margin-bottom:20px;flex-wrap:wrap;\">\n\n  <div style=\"padding:15px;border:1px solid #ddd;min-width:120px;\">\n    <h3>New</h3>\n    <p>${newLeads}</p>\n  </div>\n\n  <div style=\"padding:15px;border:1px solid #ddd;min-width:120px;\">\n    <h3>Contacted</h3>\n    <p>${contactedLeads}</p>\n  </div>\n\n  <div style=\"padding:15px;border:1px solid #ddd;min-width:120px;\">\n    <h3>Meetings</h3>\n    <p>${meetingLeads}</p>\n  </div>\n\n  <div style=\"padding:15px;border:1px solid #ddd;min-width:120px;\">\n    <h3>Proposals</h3>\n    <p>${proposalLeads}</p>\n  </div>\n\n  <div style=\"padding:15px;border:1px solid #ddd;min-width:120px;\">\n    <h3>Won</h3>\n    <p>${wonLeads}</p>\n  </div>\n\n</div>\n<div style=\"\ndisplay:flex;\ngap:20px;\nmargin-bottom:20px;\n\">\n\n<div style=\"\npadding:15px;\nborder:1px solid #ddd;\nmin-width:150px;\n\">\n<h3>Total Leads</h3>\n<p>${leads.length}</p>\n<div style=\"\npadding:15px;\nborder:1px solid #ddd;\nmin-width:150px;\n\">\n<h3>High Value Leads</h3>\n<p>${highValueLeads}</p>\n\n</div>\n<div style=\"\npadding:15px;\nborder:1px solid #ddd;\nmin-width:150px;\n\">\n<h3>Medium Value Leads</h3>\n<p>${mediumValueLeads}</p>\n</div>\n\n<div style=\"\npadding:15px;\nborder:1px solid #ddd;\nmin-width:150px;\n\">\n<h3>Low Value Leads</h3>\n<p>${lowValueLeads}</p>\n</div>\n</div>\n\n<table>\n<tr>\n  <th>ID</th>\n  <th>Name</th>\n  <th>Company</th>\n  <th>Email</th>\n  <th>Budget</th>\n  <th>Pipeline</th>\n  <th>Status</th>\n  <th>Action</th>\n</tr>\n\n${rows}\n\n</table>\n\n</body>\n</html>\n`;\n\nreturn [\n  {\n    json: {\n      html\n    }\n  }\n];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        544,
+        0
+      ],
+      "id": "a528b0bd-1301-4769-8d5c-317be8dcf7ee",
+      "name": "Code in JavaScript"
+    },
+    {
+      "parameters": {
+        "respondWith": "text",
+        "responseBody": "={{$json.html}}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.5,
+      "position": [
+        752,
+        -16
+      ],
+      "id": "44109aff-9dd9-4425-8ed4-7dbc4fd04c2f",
+      "name": "Respond to Webhook"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Execute a SQL query",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Execute a SQL query": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Respond to Webhook": {
+      "main": [
+        []
+      ]
+    },
+    "Code in JavaScript": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false
+  },
+  "versionId": "d5d90d00-0cca-4983-ae06-1981a7d289f9",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "6302d253bd01bcbf96ec91ab1b47ed5415813ed9eb5b02bbe466eff76dbf2845"
+  },
+  "nodeGroups": [],
+  "id": "9fKaLzVy41BKMzn6",
+  "tags": []
+}
