@@ -1,22 +1,3 @@
-# AI Lead CRM System
-
-A complete AI-powered lead qualification and CRM system built with n8n, Ollama (local LLM), PostgreSQL, Google Sheets, and Gmail.
-
-Built as part of my public AI Automation Engineering journey — Day 10 project.
-
----
-
-## What This System Does
-
-A business receives leads through a Google Form. This system automatically:
-
-1. **Scores the lead** using rule-based logic (revenue, timeline, company size)
-2. **Analyzes the lead** using a local AI model (Ollama/Qwen3) to generate business insights
-3. **Stores everything** in a PostgreSQL database
-4. **Displays a live CRM dashboard** via a webhook-triggered HTML interface
-5. **Sends automated emails** to qualified and unqualified leads instantly
-
-No manual work. Zero human intervention needed.
 
 ---
 
