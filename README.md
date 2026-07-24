@@ -57,7 +57,13 @@ This is the difference between a system that works in demos and one that holds u
 
 ---
 
+## Workflows
 
+| File                       | Purpose                                                       |
+|----------------------------|---------------------------------------------------------------|
+| `lead_qualify_system.json` | Early version — IF logic, lead segmentation, Gmail automation |
+| `AI_LEAD_ANALYZER.json`    | Main workflow — scoring + AI analysis + PostgreSQL storage    |
+| `CRM_Dashboard.json`       | Webhook-based live dashboard showing all leads                |
 
 ---
 
