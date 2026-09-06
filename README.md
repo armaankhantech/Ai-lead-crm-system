@@ -5,6 +5,8 @@ A complete AI-powered lead qualification and CRM system built with n8n, Ollama (
 Built as part of my public AI Automation Engineering journey — Day 10 project.
 
 ---
+## Image :
+
 ## What This System Does
 
 A business receives leads through a Google Form. This system automatically:
