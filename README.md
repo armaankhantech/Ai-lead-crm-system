@@ -6,6 +6,7 @@ Built as part of my public AI Automation Engineering journey — Day 10 project.
 
 ---
 ## Image :
+<img width="1920" height="916" alt="Image" src="https://github.com/user-attachments/assets/00ff9efa-73e4-47b9-80da-de803353838a" />
 
 ## What This System Does
 
