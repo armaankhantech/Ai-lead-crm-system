@@ -1,6 +1,8 @@
 # AI Lead CRM System
 
+A complete AI-powered lead qualification and CRM system built with n8n, Ollama (local LLM), PostgreSQL, Google Sheets, and Gmail.
 
+Built as part of my public AI Automation Engineering journey — Day 10 project.
 
 ---
 ## Image :
