@@ -16,7 +16,7 @@ A business receives leads through a Google Form. This system automatically:
 2. **Analyzes the lead** using a local AI model (Ollama/Qwen3) to generate business insights
 3. **Stores everything** in a PostgreSQL database
 4. **Displays a live CRM dashboard** via a webhook-triggered HTML interface
-5. **Sends automated emails** to qualified and unqualified leads instantly
+5. **Sends automated emails** to qualified and unqualified leads instantly 
 
 No manual work. Zero human intervention needed.
 
